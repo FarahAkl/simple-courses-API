@@ -28,6 +28,15 @@ app.all("/*splat", (req, res, next) => {
     .json({ status: ERROR, message: "This resource is not available" });
 });
 
+app.use((error, req, res, next) => {
+  res.status(error.statusCode || 500).json({
+    status: error.statusText || ERROR,
+    message: error.message || "Something is wrong!",
+    code: error.statusCode || 500,
+    data: null,
+  });
+});
+
 app.listen(port, () => {
   console.log(`listenning on port ${port}`);
 });

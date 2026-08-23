@@ -2,4 +2,12 @@ const SUCCESS = "success";
 const FAIL = "fail";
 const ERROR = "error";
 
-export { SUCCESS, FAIL, ERROR };
+class appError extends Error {
+  constructor(message, statusCode, statusText) {
+    super(message);
+    this.statusCode = statusCode;
+    this.statusText = statusText;
+  }
+}
+
+export { SUCCESS, FAIL, ERROR, appError };
