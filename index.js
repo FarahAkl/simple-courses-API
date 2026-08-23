@@ -3,25 +3,13 @@ import { router as coursesRouter } from "./routes/courses.route.js";
 import { MongoClient } from "mongodb";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import cors from "cors";
+import { ERROR } from "./utils/helper.js";
 
 dotenv.config();
 
 const url = process.env.DB_URL;
-
-// MongoDB
-// const client = new MongoClient(url);
-
-// const main = async () => {
-//   await client.connect();
-//   const db = client.db("codezone");
-//   const collection = db.collection("courses");
-// //   await collection.insertOne({
-// //     title: "CSS course",
-// //     price: 50,
-// //   });
-//   const data = await collection.find().toArray();
-// };
-// main();
+const port = process.env.PORT;
 
 // Mongoose
 
@@ -31,8 +19,15 @@ mongoose.connect(url).then(() => {
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 app.use("/api/courses", coursesRouter);
 
-app.listen(5000, () => {
-  console.log("listenning on port 5000");
+app.all("/*splat", (req, res, next) => {
+  res
+    .status(404)
+    .json({ status: ERROR, message: "This resource is not available" });
+});
+
+app.listen(port, () => {
+  console.log(`listenning on port ${port}`);
 });
