@@ -1,5 +1,6 @@
 import express from "express";
 import { router as coursesRouter } from "./routes/courses.route.js";
+import { router as usersRouter } from "./routes/users.route.js";
 import { MongoClient } from "mongodb";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
@@ -21,6 +22,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 app.use("/api/courses", coursesRouter);
+app.use("/api/users", usersRouter);
 
 app.all("/*splat", (req, res, next) => {
   res
