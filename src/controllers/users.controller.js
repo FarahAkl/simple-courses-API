@@ -24,7 +24,7 @@ const getUsers = asyncWrapper(async (req, res) => {
 });
 
 const register = asyncWrapper(async (req, res) => {
-  const { firstName, lastName, email, password } = req.body;
+  const { firstName, lastName, email, password, role } = req.body;
 
   const oldUser = await User.findOne({ email });
   if (oldUser) throw new appError("User already exists", 400, FAIL);
@@ -36,9 +36,14 @@ const register = asyncWrapper(async (req, res) => {
     lastName,
     email,
     password: hashedPassword,
+    role,
   });
 
-  const token = await generate_JWT({ email: newUser.email, id: newUser._id });
+  const token = await generate_JWT({
+    email: newUser.email,
+    id: newUser._id,
+    role: newUser.role,
+  });
 
   await newUser.save();
 
@@ -64,7 +69,12 @@ const login = asyncWrapper(async (req, res) => {
   const isValidPassword = await bcrypt.compare(password, user.password);
 
   if (isValidPassword) {
-    const token = await generate_JWT({ email: user.email, id: user._id });
+    const token = await generate_JWT({
+      email: user.email,
+      id: user._id,
+      role: user.role,
+    });
+
     return res.status(200).json({
       status: SUCCESS,
       data: {

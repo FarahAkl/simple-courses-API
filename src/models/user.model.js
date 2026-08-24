@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import validate from "validator";
+import { userRoles } from "../utils/helper.js";
 
 const userSchema = new mongoose.Schema({
   firstName: {
@@ -21,6 +22,11 @@ const userSchema = new mongoose.Schema({
     required: true,
   },
   token: { type: String },
+  role: {
+    type: String,
+    enum: [userRoles.ADMIN, userRoles.USER, userRoles.MANAGER],
+    default: userRoles.USER,
+  },
 });
 
 export const userModel = mongoose.model("User", userSchema);

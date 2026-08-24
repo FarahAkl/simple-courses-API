@@ -11,7 +11,9 @@ export const verifyToken = (req, res, next) => {
   const token = authHeader.split(" ")[1];
 
   try {
-    const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY);
+    const currentUser = jwt.verify(token, process.env.JWT_SECRET_KEY);
+    req.currentUser = currentUser;
+
     next();
   } catch (error) {
     throw new appError(error.message, 401, ERROR);

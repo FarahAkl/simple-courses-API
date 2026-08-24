@@ -5,6 +5,8 @@ const SUCCESS = "success";
 const FAIL = "fail";
 const ERROR = "error";
 
+const userRoles = { ADMIN: "ADMIN", USER: "USER", MANAGER: "MANAGER" };
+
 class appError extends Error {
   constructor(message, statusCode, statusText) {
     super(message);
@@ -20,4 +22,4 @@ const generate_JWT = async (payload) => {
   return token;
 };
 
-export { SUCCESS, FAIL, ERROR, appError, generate_JWT };
+export { SUCCESS, FAIL, ERROR, appError, generate_JWT,userRoles };
