@@ -5,7 +5,9 @@ import { MongoClient } from "mongodb";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
+import path, { dirname } from "path";
 import { ERROR } from "./utils/helper.js";
+import { fileURLToPath } from "url";
 
 dotenv.config();
 
@@ -20,7 +22,12 @@ mongoose.connect(url).then(() => {
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use( cors() );
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+app.use("/uploads", express.static(path.join(__dirname,'uploads')));
+
 app.use("/api/courses", coursesRouter);
 app.use("/api/users", usersRouter);
 
