@@ -31,7 +31,7 @@ app.use("/uploads", express.static(path.join(__dirname,'uploads')));
 app.use("/api/courses", coursesRouter);
 app.use("/api/users", usersRouter);
 
-app.all("/*splat", (req, res, next) => {
+app.all("/{*splat}", (req, res, next) => {
   res
     .status(404)
     .json({ status: ERROR, message: "This resource is not available" });
